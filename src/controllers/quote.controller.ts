@@ -8,7 +8,6 @@ export const getAll = async(req: Request,res: Response,next: NextFunction)=>{
     
     try {
       console.log((req as any).user)
-      const loggedInuserId = (req as any).user.userId;
       const data = await QuoteService.getAll()
       res.json(data)
   } catch (err) {
@@ -17,52 +16,55 @@ export const getAll = async(req: Request,res: Response,next: NextFunction)=>{
 }
 }
 
-export const postTodos =async(req: Request, res:Response) =>{
+export const postQuotes =async(req: Request, res:Response) =>{
     const quote: any  = req.body
     console.log(req.body,'is request body')
-    const quotes =await QuoteService.postTodos(req.body,  (req as any).user.userId)
+    const quotes =await QuoteService.postQuotes(req.body,  (req as any).user.userId)
     res.status(HttpStatus.CREATED).send(quotes)
 }
 
 
-export const update = async (req: Request, res:Response, next:NextFunction)  =>{
-  const quote:any  = req.body
-  const id = Number(req.params.id)
- try{
-  
-const quotes = await QuoteService.update(id,quote)
-res.status(HttpStatus.OK).send(quotes)
- }catch(err){
-  next(err)
- }
+export const update = async (req: Request, res: Response, next: NextFunction) => {
+  try{
+      const { id } = req.params
+  const loggedInUserId = (req as any).user.userId;
+
+  // @TODO: Handle errors
+  const updates = await QuoteService.update(Number(id), req.body, loggedInUserId)
+
+  res.status(HttpStatus.CREATED).json(updates)
+  } catch(e) {
+      next(e)
+  }
 }
 
-
-  export const remove = async  (req: Request, res: Response, next: NextFunction) => {
-    const id = Number(req.params.id)
-    console.log(id, ' request params ko id yo ho hai')
-    try {
-    const quotes = await QuoteService.remove(id)
-    res.status(HttpStatus.NO_CONTENT).send()
-  }catch(err){
-    next(err)
+export const remove = async (req: Request, res: Response, next: NextFunction) => {
+  try{
+      const { id } = req.params
+      // @TODO: Handle errors
+      
+      const removes = await QuoteService.remove(Number(id), (req as any).user.userId)
+      res.status(HttpStatus.NO_CONTENT).json(removes)
+  
+  } catch(e)  {
+      next(e)
   }
-  }
-
+}
 
   
-  export const Get = async (req: Request,res: Response,next: NextFunction)=>{
+//   export const Get = async (req: Request,res: Response,next: NextFunction)=>{
     
-    const id = Number(req.params.id)
-    console.log(id)
+//     const id = Number(req.params.id)
+//     console.log(id)
 
-    try{
-    const quotes = await QuoteService.Get(id)
-    res.status(HttpStatus.OK).send(quotes)
-    }catch(err){
-next(err)
-    }
+//     try{
 
-}
+//     const quotes = await QuoteService.Get(id)
+//     res.status(HttpStatus.OK).send(quotes)
+//     }catch(err){
+// next(err)
+//     }
+
+// }
   
 

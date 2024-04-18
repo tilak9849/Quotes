@@ -8,12 +8,12 @@ import { authenticateToken } from '../middleware/authentication.middleware'
 const route = express.Router()
 
 
-route.get('/',authenticateToken,  QuoteController.getAll)
-route.post('/', validate(createQuote), authenticateToken, QuoteController.postTodos)
+route.get('/',  QuoteController.getAll)
+route.post('/', validate(createQuote), authenticateToken, QuoteController.postQuotes)
 route.patch('/:id',validate(updateQuote),authenticateToken, QuoteController.update)
 route.delete('/:id',authenticateToken, QuoteController.remove)
-route.get('/:id',authenticateToken,QuoteController.Get)
+// route.get('/:id',QuoteController.Get)
 export default route;
 
-// relational database mo chen 
+
 

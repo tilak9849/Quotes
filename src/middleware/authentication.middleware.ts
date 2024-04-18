@@ -22,7 +22,6 @@ export function authenticateToken(
     try {
         // Verify and decode the token
         const decodedToken = jwt.verify(token, 'random-secret')
-        console.log('but not here right?')
         // Attach the decoded token to the request object
         // @ts-ignore
         req.user = decodedToken
@@ -35,16 +34,3 @@ export function authenticateToken(
     }
 }
 
-// export function isAdmin(req: Request, res: Response, next: NextFunction) {
-//     // @ts-ignore
-//     const { user }: { user: any } = req
-
-//     if (user && user.isAdmin) {
-//         next() // Proceed to the next middleware or route handler
-//     } else {
-//         return res.status(403).json({
-//             success: false,
-//             message: 'Unauthorized: User is not an admin',
-//         })
-//     }
-// }

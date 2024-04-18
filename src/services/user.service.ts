@@ -65,7 +65,7 @@ export const remove = async (userId: any) =>{
     
     console.log(err)
     if(err.code === 'P2003'){
-    throw Boom.notFound("Todos delete garnu hola pahila ")
+    throw Boom.notFound("You should delete your quotes first")
 }else{
   throw err
 }
