@@ -13,7 +13,6 @@ function buildError(err: any) {
         }
     }
 
-    // console.log(err,"Lau na k vayo")
     // HTTP errors
     if (err.isBoom) {
         return {

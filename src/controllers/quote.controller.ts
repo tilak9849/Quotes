@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction,Request,Response } from "express"
 import * as QuoteService from '../services/quote.service'
-import { number } from "zod"
 import HttpStatus from 'http-status-codes';
 
 export const getAll = async(req: Request,res: Response,next: NextFunction)=>{
@@ -16,11 +15,15 @@ export const getAll = async(req: Request,res: Response,next: NextFunction)=>{
 }
 }
 
-export const postQuotes =async(req: Request, res:Response) =>{
+export const postQuotes =async(req: Request, res:Response,next:NextFunction) =>{
+   try{
     const quote: any  = req.body
     console.log(req.body,'is request body')
     const quotes =await QuoteService.postQuotes(req.body,  (req as any).user.userId)
     res.status(HttpStatus.CREATED).send(quotes)
+   }catch(e){
+    next(e)
+   }
 }
 
 
@@ -29,7 +32,6 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
       const { id } = req.params
   const loggedInUserId = (req as any).user.userId;
 
-  // @TODO: Handle errors
   const updates = await QuoteService.update(Number(id), req.body, loggedInUserId)
 
   res.status(HttpStatus.CREATED).json(updates)
@@ -41,7 +43,7 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
 export const remove = async (req: Request, res: Response, next: NextFunction) => {
   try{
       const { id } = req.params
-      // @TODO: Handle errors
+  
       
       const removes = await QuoteService.remove(Number(id), (req as any).user.userId)
       res.status(HttpStatus.NO_CONTENT).json(removes)
@@ -52,19 +54,19 @@ export const remove = async (req: Request, res: Response, next: NextFunction) =>
 }
 
   
-//   export const Get = async (req: Request,res: Response,next: NextFunction)=>{
+  export const Get = async (req: Request,res: Response,next: NextFunction)=>{
     
-//     const id = Number(req.params.id)
-//     console.log(id)
+    const id = Number(req.params.id)
+    console.log(id)
 
-//     try{
+    try{
 
-//     const quotes = await QuoteService.Get(id)
-//     res.status(HttpStatus.OK).send(quotes)
-//     }catch(err){
-// next(err)
-//     }
+    const quotes = await QuoteService.Get(id)
+    res.status(HttpStatus.OK).send(quotes)
+    }catch(err){
+next(err)
+    }
 
-// }
+}
   
 

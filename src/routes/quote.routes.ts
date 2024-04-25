@@ -12,7 +12,7 @@ route.get('/',  QuoteController.getAll)
 route.post('/', validate(createQuote), authenticateToken, QuoteController.postQuotes)
 route.patch('/:id',validate(updateQuote),authenticateToken, QuoteController.update)
 route.delete('/:id',authenticateToken, QuoteController.remove)
-// route.get('/:id',QuoteController.Get)
+route.get('/:id',QuoteController.Get)
 export default route;
 
 

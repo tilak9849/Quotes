@@ -56,6 +56,33 @@ export async function login(email: string, password: string,username:string) {
     return { success: true, token }
 }
 
+
+
+export async function logout(email: string, password: string,username:string) {
+    const user = await prisma.user.findFirstOrThrow({ where: { email } })
+
+    // Compare the provided password with the stored hashed password
+    const passwordMatch = await bcrypt.compare(password, user.password)
+
+    if (!passwordMatch) {
+        // Password does not match
+        // If you want to throw a http error, you can. This is throw internal server error
+      throw  Boom.conflict('Password not correct')
+    }
+
+    // Generate a token
+    const token = jwt.sign(
+        { userId: user.id},
+        'random-secret',
+        {
+            expiresIn: '1d',
+        }
+    )
+
+    // Return the token to the client
+  
+}
+
 export const remove = async (userId: any) =>{
     try{
         return  await prisma.user.delete({where: {id:userId}})

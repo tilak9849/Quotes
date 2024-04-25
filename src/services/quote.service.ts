@@ -1,7 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client"
 import  Boom from "@hapi/boom";
-import { any } from "zod";
-import { query } from "express";
 const prisma = new PrismaClient({
 });
 
@@ -24,7 +22,7 @@ export const postQuotes = async (quote:any, userId: number) =>{
             
         })
     }catch(err:any){
-        throw Boom.forbidden("Post garna mildaina")
+        throw Boom.forbidden("You can not post")
     }
   
 }
@@ -76,3 +74,19 @@ export const remove = async (id: number, loggedInUserId: number) => {
 
 
 
+
+  export const Get = async (id: number ) =>{
+    try{
+         return await prisma.quote.findFirstOrThrow({
+            where:{id:Number(id) },
+        })
+
+    } catch (err: any){
+      console.log(err)
+      if(err.code === 'P2025'){
+      throw Boom.notFound("ERROR QUOTE NOT FOUND")
+}else{
+    throw err
+}
+}
+}

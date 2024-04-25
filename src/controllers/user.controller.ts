@@ -23,6 +23,16 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         next(error)
     }
   }
+  export const logout = async (req: Request, res: Response, next: NextFunction) => {
+  
+    
+
+  // Your logout logic here
+  // For example, clearing the JWT token from the client-side
+  res.clearCookie('jwt'); // Example for clearing JWT token from cookies
+  res.json({ message: 'Logout successful' });
+
+  }
   export const remove = async  (req: Request, res: Response, next: NextFunction) => {
     const userId = Number(req.params.id)
     console.log(userId, ' request params ko id yo ho hai')
